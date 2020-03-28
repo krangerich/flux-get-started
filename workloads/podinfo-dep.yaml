@@ -11,6 +11,9 @@ metadata:
     fluxcd.io/tag.init: regex:^3.10.*
     fluxcd.io/tag.podinfod: semver:~3.1
 spec:
+  minReadySeconds: 3
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 60
   strategy:
     rollingUpdate:
       maxUnavailable: 0
@@ -34,7 +37,7 @@ spec:
         - "1"
       containers:
       - name: podinfod
-        image: stefanprodan/podinfo:3.1.5
+        image: stefanprodan/podinfo:3.2.1
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
@@ -57,7 +60,7 @@ spec:
         - --random-error=false
         env:
         - name: PODINFO_UI_COLOR
-          value: "#34577c"
+          value: "#99577c"
         livenessProbe:
           httpGet:
             path: /healthz
@@ -68,8 +71,8 @@ spec:
             port: 9898
         resources:
           limits:
-            cpu: 1000m
-            memory: 128Mi
+            cpu: 2000m
+            memory: 512Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
